@@ -1,21 +1,9 @@
-// REACT PAGES "userService.js"
+import axios from "axios";
 
-import axios from "axios"
+const API_ADRESS = "http://localhost:8080/api/users";
 
-const USERS_REST_API_URL = "http://localhost:8080/api/users";
+const fetchData = async () => { const result = await axios(API_ADRESS);
+  return result;
+};
 
-
-class UserService {
-
-
-    getUsers(){
-
-        return axios.get(USERS_REST_API_URL);
-
-
-    }
-
-
-}
-
-export default new UserService
+export default fetchData;

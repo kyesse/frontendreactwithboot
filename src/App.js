@@ -1,14 +1,13 @@
 //import './App.css';
-import UserComponent from './componentes/UserComponent';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import TabelaUsuarios from './componentes/UserComponent';
 
 function App() {
   return (
     <div className="App">
       <div className='card'>
       <header className="App-header">
-        <UserComponent />
+        <TabelaUsuarios/>
       </header>
       </div>
     </div>

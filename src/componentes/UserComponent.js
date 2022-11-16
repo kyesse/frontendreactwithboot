@@ -1,106 +1,55 @@
+import React, { useState, useEffect } from "react";
+import fetchData from "../services/UserService";
+import "./card.css";
 
+const TabelaUsuarios = () => {
 
-import React from "react";
-import UserService from "../services/UserService";
-import "./card.css"
+  const [usuario, setUsuario] = useState([]);
 
-class UserComponent extends React.Component {
+  useEffect(() => { fetchData().then((res) => {setUsuario(res.data); });}, []);
 
-
-constructor(props){
-
-    super(props)
-
-    this.state = {
-
-        users:[]
-
-
-    }
-
-}
-
-//
-componentDidMount(){
-
-    UserService.getUsers().then((response)=>{
-
-        this.setState({users: response.data})
-    });
-}
-render(){
-
-    return(
-
-        <div className="card">
-        <h1 className ="text-center">USUARIOS CADASTRADOS</h1>
-        <div >
-
+  return (
+    <div className="card">
+      <h1 className="text-center">USUARIOS CADASTRADOS</h1>
+      <div>
         <table className="table table-striped">
+          <thead>
+             
 
-        <thead>
+          <td width="4%">nome:</td>
+            <input type="text" size="11"></input>
+            <label>sobrenome:</label>
 
-        <tr>
-
-        <td>ID </td>
-        <td>NOME </td>
-        <td>SOBRENOME </td>
-        <td>EMAIL</td>
-        
-        </tr>
-
-        </thead>
-        <tbody>
-
-        {
-            this.state.users.map(
-
-                user => 
-                <tr key = {user.id}>
-                <td>{user.id}</td>
-                <td>{user.nome}</td>
-                <td>{user.sobrenome}</td>
-                <td>{user.email}</td>
+            <input type="text" className="formSizeTb" size="11"></input>
+            <label>email</label>
+            <input type="text" size="11"></input>
+            <button>Enviar</button>
 
 
 
-                </tr>
-
-
-
-            )
-
-
-        }
-        
-        </tbody>
-        
-        
-        
-        
-        
+ 
+            <tr>
+              <td>ID </td>
+              <td>NOME </td>
+              <td>SOBRENOME </td>
+              
+              <td>EMAIL</td>
+            </tr>
+          </thead>
+          <tbody>
+            {usuario.map((usuarioData) => (
+              <tr key={usuarioData.id}>
+                <td>{usuarioData.id}</td>
+                <td>{usuarioData.nome}</td>
+                <td>{usuarioData.sobrenome}</td>
+                <td>{usuarioData.email}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
-        </div>
+      </div>
+    </div>
+  );
+};
 
-        
-        
-        
-        
-        </div>
-
-
-
-
-
-    )
-
-
-
-}
-
-}
-
-export default UserComponent;
-
-
-
+export default TabelaUsuarios;
