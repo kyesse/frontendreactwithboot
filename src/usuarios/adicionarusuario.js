@@ -3,96 +3,85 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Adicionarusuario() {
+  let navigate = useNavigate();
+  const [usuario, setUsuario] = useState({
+    nome: "",
+    Sobrenome: "",
+    email: "",
+  });
 
-    let navigate=useNavigate()
-    const [usuario,setUsuario]=useState({
-        nome:"",
-        Sobrenome:"",
-        email:""
-    });
+  const { nome, sobrenome, email } = usuario;
 
-    const{nome,sobrenome,email}=usuario
+  const onInputChange = (e) => {
+    setUsuario({ ...usuario, [e.target.name]: e.target.value });
+  };
 
-    const onInputChange=(e)=>{
-         
-        setUsuario({...usuario,[e.target.name]:e.target.value })
-     }
-
-     const onSubmit=async (e)=>{
-       e.preventDefault();
-       await axios.post("http://localhost:8080/api/users",usuario)
-       navigate("/")
-       
-     };
-
- 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    await axios.post("http://localhost:8080/api/users", usuario);
+    navigate("/");
+  };
 
   return (
+    <div className="container">
+      <div className="row">
+        <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
+          <h2 className="text-center m-4">REGISTER</h2>
 
-    <div className='container'>
-        <div className='row'>
-            <div className='col-md-6 offset-md-3 border rounded p-4 mt-2 shadow'>
-                <h2 className='text-center m-4'>REGISTER</h2>
-
-                <form onSubmit={(e)=>onSubmit(e)}>
-                <div className='mb-3'>
-                    <label htmlfor="name" className='form-label'>
-                        Nome
-                    </label>
-                    <input type={"text"}
-                    className="form-control"
-                    placeholder="digite o nome"
-                    name="nome"
-                    value={nome}
-                    onChange={(e)=>onInputChange(e)}
-                    required
-                    > 
-                                
-                    </input>
-                </div>
-
-                <div className='mb-3'>
-                    <label htmlfor="sobrenome" className='form-label'>
-                        Sobrenome
-                    </label>
-                    <input type={"text"}
-                    className="form-control"
-                    placeholder="digite o sobrenome"
-                    name="sobrenome"
-                    value={sobrenome}
-                    onChange={(e)=>onInputChange(e)}
-                    required
-                    >
-                    </input>
-                </div>
-
-                <div className='mb-3'>
-                    <label htmlfor="email" className='form-label'>
-                        Email
-                    </label>
-                    <input type={"text"}
-                    className="form-control"
-                    placeholder="digite o email"
-                    name="email"
-                    value={email}
-                    onChange={(e)=>onInputChange(e)} required
-
-                    >
-                    </input>
-                </div>
-                <button type="submit" className='btn btn-outline-primary mx-2'>
-                    Enviar
-                </button>
-                <Link type="submit" className='btn btn-outline-danger mx-2'to='/' >
-                    Cancelar
-                </Link>
-                </form>
-
-
+          <form onSubmit={(e) => onSubmit(e)}>
+            <div className="mb-3">
+              <label htmlfor="name" className="form-label">
+                Nome
+              </label>
+              <input
+                type={"text"}
+                className="form-control"
+                placeholder="digite o nome"
+                name="nome"
+                value={nome}
+                onChange={(e) => onInputChange(e)}
+                required
+              ></input>
             </div>
 
+            <div className="mb-3">
+              <label htmlfor="sobrenome" className="form-label">
+                Sobrenome
+              </label>
+              <input
+                type={"text"}
+                className="form-control"
+                placeholder="digite o sobrenome"
+                name="sobrenome"
+                value={sobrenome}
+                onChange={(e) => onInputChange(e)}
+                required
+              ></input>
+            </div>
 
+            <div className="mb-3">
+              <label htmlfor="email" className="form-label">
+                Email
+              </label>
+              <input
+                type={"text"}
+                className="form-control"
+                placeholder="digite o email"
+                name="email"
+                value={email}
+                onChange={(e) => onInputChange(e)}
+                required
+              ></input>
+            </div>
+            <button type="submit" className="btn btn-outline-primary mx-2">
+              Enviar
+            </button>
+            <Link type="submit" className="btn btn-outline-danger mx-2" to="/">
+              Cancelar
+            </Link>
+          </form>
         </div>
+      </div>
     </div>
-  )
+  );
 }
