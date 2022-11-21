@@ -1,8 +1,11 @@
 .card{
 
-    border-radius: 30px;
+   /* border-radius: 30px;
     box-shadow: 0 1px 8px rgb(65, 63, 63);
-    color: rgb(87, 100, 240);
+    color: rgb(87, 100, 240); */
+    position: relative;
+padding-left: 180px;
+    align-content:center ;
     background-image: -moz-linear-gradient(pink,blue);
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -11,11 +14,12 @@
 
     .text-center{
 
-        font-size: 25px;
+        font-size: 18px;
     }
     
     body{
-        background-color: rgb(197, 197, 197);
+        background-color: rgb(255, 255, 255);
+        position: relative;
     }
 
     td{

@@ -1,12 +1,39 @@
+import axios from "axios";
+import { Button } from "bootstrap";
 import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import fetchData from "../services/UserService";
 import "./card.css";
 
 const TabelaUsuarios = () => {
-
   const [usuario, setUsuario] = useState([]);
+  
+  const{id}=useParams
+  
+  useEffect(() => {
+    fetchData().then((res) => {
+      setUsuario(res.data);
+    });
+  }, []);
 
-  useEffect(() => { fetchData().then((res) => {setUsuario(res.data); });}, []);
+  const carregarUsuario= async ()=>{
+
+    fetchData().then((res) => {
+      setUsuario(res.data);
+    });
+ }
+
+ useEffect(()=>{
+carregarUsuario()
+ }, []);
+
+  
+
+   const deletarUsuario=async (id)=>{
+    await axios.delete(`http://localhost:8080/api/users/${id}`)
+      carregarUsuario()
+   }
+
 
   return (
     <div className="card">
@@ -14,26 +41,15 @@ const TabelaUsuarios = () => {
       <div>
         <table className="table table-striped">
           <thead>
-             
+            
 
-          <td width="4%">nome:</td>
-            <input type="text" size="11"></input>
-            <label>sobrenome:</label>
-
-            <input type="text" className="formSizeTb" size="11"></input>
-            <label>email</label>
-            <input type="text" size="11"></input>
-            <button>Enviar</button>
-
-
-
- 
             <tr>
               <td>ID </td>
               <td>NOME </td>
               <td>SOBRENOME </td>
-              
               <td>EMAIL</td>
+              <td>AÇÃO</td>
+
             </tr>
           </thead>
           <tbody>
@@ -43,6 +59,22 @@ const TabelaUsuarios = () => {
                 <td>{usuarioData.nome}</td>
                 <td>{usuarioData.sobrenome}</td>
                 <td>{usuarioData.email}</td>
+
+                <Link className="btn btn-primary mx-2"
+                to={`/viewuser/${usuarioData.id}`}
+                >view</Link>
+                <Link className="btn btn-outline-primary mx-2" to={`/editusers/${usuarioData.id}`}>edit</Link>
+                <button className="btn btn-danger mx-2"
+                onClick={()=>deletarUsuario(usuarioData.id)}
+                
+                >delete</button>
+
+
+
+
+
+
+
               </tr>
             ))}
           </tbody>
