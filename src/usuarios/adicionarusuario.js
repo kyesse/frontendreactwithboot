@@ -1,16 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, useFormik } from "formik";
 import * as yup from "yup";
-import CustomizedSnackbars from "../componentes/NotificationPop";
+import CustomizedSnackbars from "../componentes/snackbar";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { setSnackbar, SET_SNACKBAR } from "../Redux/snackbar";
+import {
+  createStoreHook,
+  Provider,
+  useDispatch,
+  useSelector,
+} from "react-redux";
+import "./formikstyles.css";
 
 export default function Adicionarusuario() {
   let navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
   const [usuario, setUsuario] = useState({
     nome: "",
     Sobrenome: "",
@@ -32,44 +43,22 @@ export default function Adicionarusuario() {
       .required("campo obrigatorio"),
   });
 
-  const { values, handleBlur, handleChange } = useFormik({
+  const { values, errors, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
       nome: "",
       sobrenome: "",
       email: "",
     },
+    onSubmit: async (values) => {
+      await axios.post("http://localhost:8080/api/users", values);
+      handleDispatch();
+      navigate("/");
+      console.log(values);
+    },
     validationSchema: basicSchema,
   });
-
-  const [open, setOpen] = React.useState(false);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  const action = (
-    <React.Fragment>
-      <Button color="secondary" size="small" onClick={handleClose}>
-        UNDO
-      </Button>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  );
+  console.log(values);
+  console.log(errors);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -78,13 +67,19 @@ export default function Adicionarusuario() {
     navigate("/");
   };
 
+  const handleDispatch = () => {
+    dispatch(setSnackbar(true, "success", "USUARIO CADASTRADO"));
+  };
+
+
+
   return (
     <div className="container">
       <div className="row">
         <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
           <h2 className="text-center m-4">CADASTRO</h2>
 
-          <form onSubmit={(e) => onSubmit(e)}>
+          <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label htmlfor="name" className="form-label">
                 Nome
@@ -94,8 +89,8 @@ export default function Adicionarusuario() {
                 className="form-control"
                 placeholder="digite o nome"
                 name="nome"
-                value={nome}
-                onChange={(e) => onInputChange(e)}
+                value={values.nome}
+                onChange={handleChange}
               ></input>
             </div>
 
@@ -108,8 +103,8 @@ export default function Adicionarusuario() {
                 className="form-control"
                 placeholder="digite o sobrenome"
                 name="sobrenome"
-                value={sobrenome}
-                onChange={(e) => onInputChange(e)}
+                value={values.sobrenome}
+                onChange={handleChange}
               ></input>
             </div>
 
@@ -118,15 +113,19 @@ export default function Adicionarusuario() {
                 Email
               </label>
               <input
-                type={"text"}
-                className="form-control"
+                type={"email"}
+                className={errors.email ? "input-error" : ""}
                 placeholder="digite o email"
                 name="email"
-                value={email}
-                onChange={(e) => onInputChange(e)}
+                value={values.email}
+                onChange={handleChange}
               ></input>
             </div>
-            <button type="submit" className="btn btn-outline-primary mx-2">
+            <button
+              type="submit"
+              className="btn btn-outline-primary mx-2"
+            
+            >
               Enviar
             </button>
             <Link type="submit" className="btn btn-outline-danger mx-2" to="/">

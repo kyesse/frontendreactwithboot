@@ -14,7 +14,10 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PrimarySearchAppBar from "./PrimarySearchAppBar";
 import { Grid } from "@mui/material";
-
+import CustomizedSnackbars from "./snackbar";
+import Adicionarusuario from "../usuarios/adicionarusuario";
+import { createStoreHook, Provider } from "react-redux";
+import { setSnackbar, SET_SNACKBAR } from "../Redux/snackbar";
 const columns = [
   { id: "name", label: "ID", minWidth: 170 },
   { id: "ID", label: "ID", minWidth: 170 },
@@ -80,16 +83,19 @@ const NewScrollTable = () => {
     await axios.get(`http://localhost:8080/api/users/search/${id}`);
     carregarUsuario();
   };
-
+  
   const searchUser2 = async (id) => {
     await axios.get(`http://localhost:8080/api/search/${id}`);
     carregarUsuario();
     //SearchUsers()
     // navigate("/");
   };
-
+  const store = createStoreHook(setSnackbar);
   return (
+    
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        
+   
       <PrimarySearchAppBar />
       <Grid container spacing={0}>
         <Grid item xs={12}>

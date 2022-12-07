@@ -20,6 +20,7 @@ import Adicionarusuario from "../usuarios/adicionarusuario";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import fetchData from "../services/UserService";
+import CustomizedSnackbars from "./snackbar";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -200,6 +201,7 @@ export default function PrimarySearchAppBar() {
           >
             <MenuIcon />
           </IconButton>
+          
           <Typography
             variant="h6"
             noWrap
@@ -209,6 +211,7 @@ export default function PrimarySearchAppBar() {
 
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          
             <Link className="btn btn-outline-light" to={`/adduser`}>
               {" "}
               Adicionar usuario
